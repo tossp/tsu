@@ -15,9 +15,13 @@ BUILD_TIME=`date +%FT%T%z`
 LDFLAGS=-ldflags "-s -w -X github.com/tossp/tsgo/pkg/setting.GitTag=$(GITTAG) -X github.com/tossp/tsgo/pkg/setting.GitVersion=${GITVERSION} -X github.com/tossp/tsgo/pkg/setting.BuildTime=${BUILD_TIME} -X github.com/tossp/tsgo/pkg/setting.BuildVersion=${VERSION}"
 GOBUILD=go build -trimpath
 
-all: build
+all: up
 
-build: fmt
+pdf: fmt
+	@echo " > Building pdf..."
+	@env CGO_ENABLED=0 ${GOBUILD} ${LDFLAGS} -o $(DIST_DIR)pdf$(EXE) ./cmd/pdf
+
+deflate: fmt
 	@echo " > Building deflate..."
 	@env CGO_ENABLED=0 ${GOBUILD} ${LDFLAGS} -o $(DIST_DIR)deflate$(EXE) ./cmd/deflate
 
